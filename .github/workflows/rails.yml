@@ -1,0 +1,81 @@
+name: Rails
+on: push
+
+jobs:
+  verify:
+    name: Build
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:12
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: wilayah_indonesia_rails_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      # if you need redis
+      # redis:
+      #   image: redis
+      #   ports:
+      #   - 6379:6379
+      #   options: --entrypoint redis-server
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.7.1
+
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -yqq
+          sudo apt-get install -yqq libpq-dev build-essential libcurl4-openssl-dev
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+          yarn install
+
+      - name: Setup test database
+        env:
+          PGHOST: localhost
+          PGUSER: postgres
+          PG_PORT: 5432
+          RAILS_ENV: test
+          POSTGRES_PASSWORD: postgres
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+
+        run: |
+          rake db:create db:migrate
+
+      - name: Run tests
+        env:
+          PGHOST: localhost
+          PGUSER: postgres
+          PG_PORT: 5432
+          RAILS_ENV: test
+          POSTGRES_PASSWORD: postgres
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        run: rake
+
+      - name: Deploy
+        uses: akhileshns/heroku-deploy@v3.4.6
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: wilayah-indonesia
+          heroku_email: arif.ikhsanudin.id@gmail.com
+
+      - name: Migrate and seed
+        run: |
+          heroku run rake db:migrate db:seed --app=wilayah-indonesia
