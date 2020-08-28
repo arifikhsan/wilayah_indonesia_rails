@@ -2,17 +2,19 @@
 
 ## Commands
 
-### heroku clean
+### reset, migrate
 
-heroku restart && heroku pg:reset DATABASE --confirm wilayah-indonesia && heroku run rake db:migrate
+heroku restart --app=wilayah-indonesia && heroku pg:reset DATABASE --confirm wilayah-indonesia --app=wilayah-indonesia && heroku run rake db:migrate --app=wilayah-indonesia 
 
-### seed on heroku
+### reset, migrate, seed
 
 heroku restart --app=wilayah-indonesia && heroku pg:reset DATABASE --confirm wilayah-indonesia --app=wilayah-indonesia && heroku run rake db:migrate db:seed --app=wilayah-indonesia 
 
-### migrate and seed on heroku
+### migrate, seed
 
 heroku run rake db:migrate db:seed --app=wilayah-indonesia 
+
+## heroku console
 
 heroku run console --app=wilayah-indonesia 
 heroku run bash --app=wilayah-indonesia 
