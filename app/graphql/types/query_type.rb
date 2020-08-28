@@ -20,21 +20,21 @@ module Types
       Village.all
     end
 
-    field :regencies_by_province, [RegencyType], null: false do
+    field :regencies_by_province, [RegencyType], null: false, description: "Semua kota/kabupaten berdasarkan provinsi" do
       argument :province_id, Integer, required: true
     end
     def regencies_by_province(province_id:)
       Regency.where(province_id: province_id).order(:name)
     end
 
-    field :districts_by_regency, [DistrictType], null: false do
+    field :districts_by_regency, [DistrictType], null: false, description: "Semua kecamatan berdasarkan kota/kabupaten" do
       argument :regency_id, Integer, required: true
     end
     def districts_by_regency(regency_id:)
       District.where(regency_id: regency_id).order(:name)
     end
 
-    field :villages_by_district, [VillageType], null: false do
+    field :villages_by_district, [VillageType], null: false, description: "Semua desa berdasarkan kecamatan" do
       argument :district_id, Integer, required: true
     end
     def villages_by_district(district_id:)
