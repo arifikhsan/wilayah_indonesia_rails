@@ -19,5 +19,26 @@ module Types
     def villages
       Village.all
     end
+
+    field :regencies_by_province, [RegencyType], null: false do
+      argument :province_id, Integer, required: true
+    end
+    def regencies_by_province(province_id:)
+      Regency.where(province_id: province_id).order(:name)
+    end
+
+    field :districts_by_regency, [DistrictType], null: false do
+      argument :regency_id, Integer, required: true
+    end
+    def districts_by_regency(regency_id:)
+      District.where(regency_id: regency_id).order(:name)
+    end
+
+    field :villages_by_district, [VillageType], null: false do
+      argument :district_id, Integer, required: true
+    end
+    def villages_by_district(district_id:)
+      Village.where(district_id: district_id).order(:name)
+    end
   end
 end
