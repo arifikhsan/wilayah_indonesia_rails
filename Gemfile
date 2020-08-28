@@ -55,4 +55,8 @@ gem "activerecord-import", "~> 1.0"
 
 gem "graphql", "~> 1.11"
 
-gem 'graphiql-rails', group: :development
+gem 'graphiql-rails'
+
+gem "graphql-rails_logger", "~> 1.2"
+
+gem "rack-cors", "~> 1.1"
