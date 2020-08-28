@@ -17,7 +17,7 @@ module Types
 
     field :villages, [VillageType], null: false, description: "Semua daftar desa"
     def villages
-      Village.all
+      Village.take(10)
     end
 
     field :regencies_by_province, [RegencyType], null: false, description: "Semua kota/kabupaten berdasarkan provinsi" do
