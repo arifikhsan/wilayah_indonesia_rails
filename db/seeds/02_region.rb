@@ -41,16 +41,19 @@ if District.count.zero?
   District.import districts
 end
 
-if Village.count.zero?
-  villages_csv = CSV.parse(File.read(Rails.root + 'db/seeds/region/villages.csv'))
-  villages = []
-  villages_csv.map do |village|
-  villages << Village.new(
-    id: village.first,
-    district_id: village.second,
-    name: village.third
-  )
-  end
+#* Heroku free limit 10.000 rows
+unless Rails.env.production?
+  if Village.count.zero?
+    villages_csv = CSV.parse(File.read(Rails.root + 'db/seeds/region/villages.csv'))
+    villages = []
+    villages_csv.map do |village|
+    villages << Village.new(
+      id: village.first,
+      district_id: village.second,
+      name: village.third
+    )
+    end
 
-  Village.import villages, on_duplicate_key_ignore: true
+    Village.import villages, on_duplicate_key_ignore: true
+  end
 end
