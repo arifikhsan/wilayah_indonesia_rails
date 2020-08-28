@@ -1,6 +1,6 @@
 module Types
   class ProvinceType < Types::BaseObject
-    field :id, GraphQL::Types::BigInt, null: false
+    field :id, Integer, null: false
     field :name, String, null: true
   end
 end
