@@ -1,13 +1,23 @@
 module Types
   class QueryType < Types::BaseObject
-    # Add root-level fields here.
-    # They will be entry points for queries on your schema.
+    field :provinces, [ProvinceType], null: false, description: "Semua daftar provinsi"
+    def provinces
+      Province.all
+    end
 
-    # TODO: remove me
-    field :test_field, String, null: false,
-      description: "An example field added by the generator"
-    def test_field
-      "Hello World!"
+    field :regencies, [RegencyType], null: false, description: "Semua daftar kota atau kabupaten"
+    def regencies
+      Regency.all
+    end
+
+    field :districts, [DistrictType], null: false, description: "Semua daftar kecamatan"
+    def districts
+      District.all
+    end
+
+    field :villages, [VillageType], null: false, description: "Semua daftar desa"
+    def villages
+      Village.all
     end
   end
 end
