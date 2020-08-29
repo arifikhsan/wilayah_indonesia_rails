@@ -47,6 +47,18 @@ jobs:
           bundle install --jobs 4 --retry 3
           yarn install
 
+      - name: Run migrate and seed
+        env:
+          PGHOST: localhost
+          PGUSER: postgres
+          PG_PORT: 5432
+          RAILS_ENV: test
+          POSTGRES_PASSWORD: postgres
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+
+        run: |
+          rake db:create db:migrate db:seed
+
       - name: Setup test database
         env:
           PGHOST: localhost
