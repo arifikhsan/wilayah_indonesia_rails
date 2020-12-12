@@ -1,35 +1,67 @@
-# Wilayah Indonesia
+# REST API Wilayah Indonesia dengan GraphQL
 
-## Commands
+> https://wilayah-indonesia.herokuapp.com/
 
-### reset, migrate
+## Cara Pakai
 
-heroku restart --app=wilayah-indonesia && heroku pg:reset DATABASE --confirm wilayah-indonesia --app=wilayah-indonesia && heroku run rake db:migrate --app=wilayah-indonesia 
+* Kunjungi https://wilayah-indonesia.herokuapp.com/graphiql
 
-### reset, migrate, seed
+### Pilih Semua Provinsi
 
-heroku restart --app=wilayah-indonesia && heroku pg:reset DATABASE --confirm wilayah-indonesia --app=wilayah-indonesia && heroku run rake db:migrate db:seed --app=wilayah-indonesia 
+```gql
+query {
+  provinces {
+    id
+    name
+  }
+}
+```
 
-### migrate, seed
+### Semua kota/kabupaten
 
-heroku run rake db:migrate db:seed --app=wilayah-indonesia 
+```gql
+query {
+  regencies {
+    id
+    name
+  }
+}
+```
 
-## heroku console
+### Semua kota/kabupaten berdasarkan id provinsi
 
-heroku run console --app=wilayah-indonesia 
-heroku run bash --app=wilayah-indonesia 
+```gql
+query {
+  regenciesByProvince(provinceId: 33) {
+    id
+    name
+  }
+}
+```
 
-### rebuild database locally
 
-rake db:drop db:create db:migrate
-rake db:drop db:create db:migrate db:seed
-rake db:seed
+### Semua kecamatan
 
-### logs
+```gql
+query {
+  districts {
+    id
+    name
+  }
+}
+```
 
-heroku logs --tail --app wilayah-indonesia
+### Semua kecamatan berdasarkan id kota/kabupaten
 
-### secret key
+```gql
+query {
+  districtsByRegency(regencyId: 3308) {
+    id
+    name
+  }
+}
+```
 
-EDITOR=vim rails credentials:edit
-rails:credentials:show
+## Sumber Data
+
+https://github.com/edwardsamuel/Wilayah-Administratif-Indonesia
