@@ -1,5 +1,7 @@
 # REST API Wilayah Indonesia dengan GraphQL
 
+Menampilkan daftar provinsi, kota, kecamatan dengan GraphQL untuk membuat form isian alamat. :)
+
 > https://wilayah-indonesia.herokuapp.com/
 
 ## Cara Pakai
